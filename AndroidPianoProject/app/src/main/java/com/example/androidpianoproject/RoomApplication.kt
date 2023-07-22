@@ -10,7 +10,7 @@ class RoomApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        // Roomデータベース「practices」作成
         database = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,

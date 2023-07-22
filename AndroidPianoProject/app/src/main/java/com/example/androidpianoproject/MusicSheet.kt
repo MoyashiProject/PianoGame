@@ -1,7 +1,7 @@
 package com.example.androidpianoproject
 
+import android.content.res.Configuration
 import android.os.Bundle
-import android.telecom.Call.Details
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +11,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.example.androidpianoproject.ui.theme.AndroidPianoProjectTheme
 
-class MainActivity : ComponentActivity() {
+class MusicSheet : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -25,47 +26,50 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("")
-                    MainScreen(navController = )
+                    DetailScreen(navController = )
+                    Greeting2("Android")
+                    MyScreen()
+                    ShowMusicSheet()
+
                 }
+
             }
         }
     }
 }
 
-
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting2(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "ここに楽譜 $name!",
         modifier = modifier
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun GreetingPreview2() {
     AndroidPianoProjectTheme {
-        Greeting("Android")
+        Greeting2("Android")
     }
 }
-//@Preview(
-//    showBackground = true,
-//    widthDp = 320,
-//    uiMode = UI_MODE_NIGHT_YES,
-//    name = "Dark"
-//)
-//@Composable
-//fun DefaultPreview() {
-//    ComposeTutorialTheme {
-////        Greetings()
-////        MainActivity(modifier = Modifier.fillMaxSize())
-//    }
-//}
 @Composable
-fun MainScreen(navController: NavController) {
-    Button(onClick = { navController.navigate("detail") }) {
-        Text(text = "Go to Detail")
+fun ShowMusicSheet(){
+    //楽譜を表示するプログラムを書く
+    //データベースから楽譜を引っ張って来る
+    //
+}
+@Composable
+fun MyScreen() {
+    val configuration = LocalConfiguration.current
+    if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        // 横画面固定時の処理
     }
 }
 
+@Composable
+fun DetailScreen(navController: NavController) {
+    Button(onClick = { navController.popBackStack() }) {
+        Text(text = "Go Back")
+    }
+}

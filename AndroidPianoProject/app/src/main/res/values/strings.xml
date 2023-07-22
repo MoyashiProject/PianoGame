@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidPianoProject</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_music_sheet">music_sheet</string>
 </resources>

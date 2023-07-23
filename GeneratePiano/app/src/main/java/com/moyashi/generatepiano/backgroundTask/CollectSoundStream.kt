@@ -23,6 +23,7 @@ import kotlin.math.sqrt
 class CollectSoundStream(val context: Context) : ComponentActivity() {
     companion object {
         const val LOG_NAME: String = "AudioSensor"
+
     }
 
     private val sampleRate = 44100 // サンプリングレート
@@ -36,14 +37,6 @@ class CollectSoundStream(val context: Context) : ComponentActivity() {
 
     private var isRecoding: Boolean = false // 録音しているか
     private var run: Boolean = false // 音解析をしているか
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val viewModel = ViewModelProvider(this)[DetectSoundViewModel::class.java]
-    }
-
 
     // 録音開始時の初期設定
     // period: オーディオ処理のインターバル
@@ -169,5 +162,10 @@ class CollectSoundStream(val context: Context) : ComponentActivity() {
         // 初回の呼び出し
         hnd0.post(rnb0)
     }
+
+    private fun exchangefreq2scale(number:Int){
+
+    }
+
 }
 

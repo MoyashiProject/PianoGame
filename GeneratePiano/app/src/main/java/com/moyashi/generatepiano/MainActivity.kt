@@ -106,8 +106,13 @@ class MainActivity : ComponentActivity() {
                     startDestination = Route.FIRST.name, //最初の画面をMainScreenに設定
                     modifier = Modifier.padding(padding)
                 ) {
+                    //画面1
                     composable(route = Route.FIRST.name) {
                         MainScreen(practiceList)
+                    }
+                    //画面２
+                    composable(route = Route.SECOND.name) {
+                        ScoreSheetView()
                     }
                 }
             }
@@ -167,6 +172,29 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    //楽譜の設定
+    fun NewSetting() {
+        Column {
+            TopAppBar(
+                title = { Text("楽譜作成")}
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ){
+            }
+        }
+    }
+
+    @Composable
+    //楽譜表示
+    fun ScoreSheetView() {
+        //よっしーの担当
     }
     @Composable
     fun PracticeItem(practice: Practice) {

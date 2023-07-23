@@ -1,6 +1,6 @@
 package com.moyashi.generatepiano.enum
 
-enum class enum_musicStep(val id: Int,val frequency: Double, jpName:String,val names:String) {
+enum class enum_musicStep(val id: Int,val frequency: Double,val jpName:String,val names:String) {
     A0(1,27.5,"ラ0","A0"),
     As0(2,29.135,"ラ#0","A#0"),
     B0(3,30.868,"シ0","B0"),

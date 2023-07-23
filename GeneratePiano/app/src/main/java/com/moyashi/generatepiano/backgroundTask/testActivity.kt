@@ -30,11 +30,12 @@ class testActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val context: Context = this
-        val sound = CollectSoundStream(context =context)
+
 
         val viewModel =
             ViewModelProvider(this)[DetectSoundViewModel::class.java]
-//        sound.start(10)
+        val sound = CollectSoundStream(context =context,viewModel)
+        sound.start(10)
 
 
         setContent {

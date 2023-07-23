@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class DetectSoundViewModel: ViewModel() {
-    private val _counter = MutableLiveData(0)
-    val counter: LiveData<Int> = _counter
+    private val _onkai = MutableLiveData("")
+    val counter: LiveData<String> = _onkai
 
-    fun setValue(value:Int) {
-        _counter.value = value
+    fun setOnkai(value:String) {
+        _onkai.value = value
     }
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"

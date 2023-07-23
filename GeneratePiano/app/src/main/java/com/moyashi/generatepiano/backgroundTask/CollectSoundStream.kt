@@ -6,16 +6,21 @@ import android.content.pm.PackageManager
 import android.media.AudioFormat
 import android.media.AudioRecord
 import android.media.MediaRecorder
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
+import com.moyashi.generatepiano.DetectSoundViewModel
 import org.jtransforms.fft.DoubleFFT_1D
 import java.util.stream.IntStream
 import kotlin.math.log10
 import kotlin.math.sqrt
 
-class CollectSoundStream(val context: Context){
+class CollectSoundStream(val context: Context) : ComponentActivity() {
     companion object {
         const val LOG_NAME: String = "AudioSensor"
     }
@@ -32,6 +37,12 @@ class CollectSoundStream(val context: Context){
     private var isRecoding: Boolean = false // 録音しているか
     private var run: Boolean = false // 音解析をしているか
 
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val viewModel = ViewModelProvider(this)[DetectSoundViewModel::class.java]
+    }
 
 
     // 録音開始時の初期設定
@@ -146,6 +157,7 @@ class CollectSoundStream(val context: Context){
                 // 最大振幅の周波数
                 val maxFrequency: Int = (maxIndex * sampleRate / fftBuffer.size)
                 Log.d(LOG_NAME, "maxFrequency = $maxFrequency")
+//                viewModel.setValue(maxFrequency)
 
                 // stop用のフラグ
                 if (run) {

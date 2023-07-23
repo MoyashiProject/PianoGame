@@ -9,9 +9,10 @@ import random
 ## E => 簡単, D => 難しい
 print("難易度を入力してください")
 print("簡単ならEを、難しいならDを入力してください")
-diff = str(input())
+# diff = str(input())
 
 
+diff = 'E'
 #乱数生成
 random_num = [-1 for _ in range(8)]
 random_num[0] = 0
@@ -91,26 +92,26 @@ meas.append(n)
 stream_right.append(meas)
 
 
-##左手
-for i in range(14): #のぼり
-    ###1小節目
-    meas = stream.Measure()
-    for j in range(8):
-        n_left_up = note.Note(sounds[random_num[j] + 7 + i], quarterLength = 0.25)
-        meas.append(n_left_up)
-    stream_left.append(meas)
+# ##左手
+# for i in range(14): #のぼり
+#     ###1小節目
+#     meas = stream.Measure()
+#     for j in range(8):
+#         n_left_up = note.Note(sounds[random_num[j] + 7 + i], quarterLength = 0.25)
+#         meas.append(n_left_up)
+#     stream_left.append(meas)
 
-for i in range(14): #くだり
-    ###1小節目
-    meas = stream.Measure()
-    x = 18
-    for j in range(8):
-        if j == 0:
-            n_left_down = note.Note(sounds[x + 7 - i], quarterLength = 0.25)
-        else:
-            n_left_down = note.Note(sounds[x - random_num[j] + 7 - i], quarterLength = 0.25)
-        meas.append(n_left_down)
-    stream_left.append(meas)
+# for i in range(14): #くだり
+#     ###1小節目
+#     meas = stream.Measure()
+#     x = 18
+#     for j in range(8):
+#         if j == 0:
+#             n_left_down = note.Note(sounds[x + 7 - i], quarterLength = 0.25)
+#         else:
+#             n_left_down = note.Note(sounds[x - random_num[j] + 7 - i], quarterLength = 0.25)
+#         meas.append(n_left_down)
+#     stream_left.append(meas)
 
 ###最後の小節
 meas = stream.Measure()
@@ -118,9 +119,15 @@ n = note.Note("C2", quarterLength = 2)
 meas.append(n)
 stream_left.append(meas)
 
-
 ##最後のおまじない
 s = stream.Score()
 s.append(stream_right)
 s.append(stream_left)
 s.show('midi')
+
+note_array = []
+for element in s.recurse():
+    if isinstance(element,note.Note):
+        note_array.append(element.pitch.nameWithOctave)
+
+print(note_array)

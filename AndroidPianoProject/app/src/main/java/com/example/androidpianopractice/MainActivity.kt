@@ -7,6 +7,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.MutableLiveData
 import com.example.androidpianopractice.ui.theme.AndroidPianoPracticeTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,11 +41,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DetectSoundAcitivity(context:Context) {
-    Button(onClick = {
-        CollectSoundStream(context = context)
-    }) {
-        Text(text = "おはよう")
+
+    val isLimit: MutableLiveData<Boolean> by lazy{
+        MutableLiveData<Boolean>()
     }
+
+    Column {
+        Button(onClick = {
+            val sound = CollectSoundStream(context = context)
+            sound.start(10)
+        }) {
+            Text(text = "おはよう")
+        }
+
+    }
+
+
 }
 
 //@Preview(showBackground = true)

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Date
 
 class PracticeViewModel : ViewModel() {
     private val dao = RoomApplication.database.practiceDao()
@@ -18,22 +19,26 @@ class PracticeViewModel : ViewModel() {
     }
 
     fun postPractice(title: String) {
-        viewModelScope.launch {
-            val newPractice = Practice(id = 0, title = title)
+        viewModelScope.launch(Dispatchers.IO) {
+            val newPractice = Practice(id = 0, title = title, created_at = Date())
             dao.post(newPractice)
             loadPractice()
         }
     }
 
+    fun retrievePracticeList(): List<Practice> {
+        return practiceList
+    }
+
     fun deletePractice(practice: Practice) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             dao.delete(practice)
             loadPractice()
         }
     }
 
-    fun retrievePracticeList(): SnapshotStateList<Practice> {
-        return practiceList
+    fun retrievePracticeById(practiceId: Long): Practice? {
+        return practiceList.find { it.id == practiceId }
     }
 
     private fun loadPractice() {

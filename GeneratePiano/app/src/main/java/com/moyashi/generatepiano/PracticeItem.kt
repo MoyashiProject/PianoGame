@@ -11,12 +11,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import java.text.SimpleDateFormat
 
 @Composable
 fun PracticeItem(
     practice: Practice,
-    viewModel: PracticeViewModel
+    navController: NavHostController
 ) {
     val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
 
@@ -24,7 +25,9 @@ fun PracticeItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable(onClick = { viewModel.deletePractice(practice) }) //クリックするとpracticeItem消える
+            .clickable {
+                navController.navigate(MainActivity.Route.THIRD.name)
+            }
     ) {//title表示
         Text(
             text = practice.title,

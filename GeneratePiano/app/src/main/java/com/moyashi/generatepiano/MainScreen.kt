@@ -1,5 +1,6 @@
 package com.moyashi.generatepiano
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -21,11 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: PracticeViewModel) {
+fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
     val practiceList = viewModel.retrievePracticeList()
     var text: String by remember { mutableStateOf("") }
 
@@ -39,7 +43,7 @@ fun MainScreen(viewModel: PracticeViewModel) {
                 .weight(1f)
         ) {//リストビューのアイテム表示
             items(practiceList) { practice ->
-                PracticeItem(practice, viewModel)
+                PracticeItem(practice, navController)
             }
         }
         Row( //practiceList追加するためコード。多分この機能消す。その代わりに曲を検索できるようにする予定
@@ -64,7 +68,7 @@ fun MainScreen(viewModel: PracticeViewModel) {
                 },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
-                Text("ADD")
+                Text("search")
             }
         }
     }

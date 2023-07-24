@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     }
                     // 画面3
                     composable(
-                        route = Route.THIRD.name,
+                        route = "detail/{practiceId}",
                         arguments = listOf(navArgument("practiceId") { type = NavType.LongType })
                     ) { backStackEntry ->
                         val practiceId = backStackEntry.arguments?.getLong("practiceId")

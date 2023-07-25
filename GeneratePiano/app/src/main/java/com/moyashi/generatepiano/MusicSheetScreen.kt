@@ -7,15 +7,20 @@ import android.content.pm.ActivityInfo
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -48,7 +53,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.moyashi.generatepiano.backgroundTask.CollectSoundStream
 
 @Composable
-fun MusicSheetScreen(viewModel:DetectSoundViewModel) {
+fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
 
     val counter = viewModel.counter.observeAsState()
 
@@ -56,27 +61,53 @@ fun MusicSheetScreen(viewModel:DetectSoundViewModel) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        // Draw the line on the Canvas
-        Box(
-            contentAlignment = Alignment.Center
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .width(1200.dp)
+                .horizontalScroll(rememberScrollState()),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ){
-            Canvas(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 32.dp)
-                    .background(Color.White)
-            ) {
-                for (i in 0 .. 4) {
-                    val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
-                    drawLine(
-                        color = Color.Black,
-                        start = Offset(0f, y),
-                        end = Offset(size.width, y),
-                        strokeWidth = 5f
-                    )
+            Box(
+                contentAlignment = Alignment.Center
+            ){
+                Box{
+                    Canvas(
+                        modifier = Modifier
+                            .width(5000.dp)
+                            .fillMaxHeight()
+                            .padding(vertical = 64.dp)
+                            .background(Color.White)
+                    ) {
+                        for (i in 0 .. 4) {
+                            val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
+                            drawLine(
+                                color = Color.Black,
+                                start = Offset(0f, y),
+                                end = Offset(size.width, y),
+                                strokeWidth = 5f
+                            )
+                        }
+                    }
+                    Row(
+                        modifier= Modifier.fillMaxSize().offset(x = 130.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Text(modifier = Modifier
+                            .padding(vertical = 32.dp)
+                            ,text= "おあはほかじぇｒｔ；あｊｒ；ｔかじぇｒ；ｋｌｔじゃ；ぇｒｋｔじゃ；ヶｒｊｔ；あヶｊｒｔ；ぁけｊｒｔ；ら")
+
+                    }
+
                 }
+
             }
+
         }
+        // Draw the line on the Canvas
+
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.CenterStart
@@ -84,7 +115,7 @@ fun MusicSheetScreen(viewModel:DetectSoundViewModel) {
             Image(
                 painter = painterResource(id = R.drawable.clef),
                 contentDescription = null,
-                modifier = Modifier.size(240.dp)
+                modifier = Modifier.size(240.dp).offset(x= (-50).dp)
             )
         }
         counter.value?.let { count ->
@@ -93,6 +124,9 @@ fun MusicSheetScreen(viewModel:DetectSoundViewModel) {
     }
 
 }
+
+
+
 
 @Composable
 fun LockScreenOrientation(orientation: Int) {

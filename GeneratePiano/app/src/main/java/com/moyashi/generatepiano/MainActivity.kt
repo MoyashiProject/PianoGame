@@ -59,9 +59,14 @@ class MainActivity : ComponentActivity() {
                         MainScreen(viewModel, navController)
                     }
                     //画面２
-                    composable(route = Route.SECOND.name) {
+                    composable(
+                        route = "${Route.SECOND.name}/{practiceId}",
+                        arguments = listOf(navArgument("practiceId"){type= NavType.LongType})
+                    ) {backStackEntry ->
                         //楽譜表示画面
-                        MusicSheetScreen(detectSoundViewModel)
+                        val practiceID = backStackEntry.arguments?.getLong("practiceId")
+                        val practice = viewModel.retrievePracticeById(practiceID ?:0L)
+                        MusicSheetScreen(practice,detectSoundViewModel)
                     }
                     // 詳細画面
                     composable(

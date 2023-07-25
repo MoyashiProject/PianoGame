@@ -74,7 +74,8 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
             }
             Button(
                 onClick = {
-                    navController.navigate(MainActivity.Route.SECOND.name)
+//                    navController.navigate(MainActivity.Route.SECOND.name)
+                     navController.navigate("${MainActivity.Route.SECOND.name}/${practice?.id}")
                 }
             ) {
                 Text("練習する")

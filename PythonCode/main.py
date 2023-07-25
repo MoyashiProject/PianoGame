@@ -56,6 +56,7 @@ stream_left.append(inst2)
 tc = clef.TrebleClef() #ト音記号
 bc = clef.BassClef() #ヘ音記号
 
+print(tc)
 stream_right.append(tc)
 stream_left.append(bc)
 

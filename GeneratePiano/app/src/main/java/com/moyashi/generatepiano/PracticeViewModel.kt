@@ -1,10 +1,11 @@
 package com.moyashi.generatepiano
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.moyashi.generatepiano.backgroundTask.GenerateScore
+import com.moyashi.generatepiano.modelData.ModelScoreSheet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +21,8 @@ class PracticeViewModel : ViewModel() {
 
     fun postPractice(title: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val newPractice = Practice(id = 0, title = title, created_at = Date())
+            val scores = GenerateScore().GenerateEasy()
+            val newPractice = Practice(id = 0, title = title, created_at = Date(),scores,scores)
             dao.post(newPractice)
             loadPractice()
         }

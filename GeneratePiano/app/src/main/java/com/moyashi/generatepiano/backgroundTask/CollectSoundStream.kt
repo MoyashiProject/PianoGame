@@ -15,14 +15,19 @@ import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.moyashi.generatepiano.DetectSoundViewModel
+import com.moyashi.generatepiano.enum.enum_musicStep
 import org.jtransforms.fft.DoubleFFT_1D
 import java.util.stream.IntStream
 import kotlin.math.log10
+import kotlin.math.max
 import kotlin.math.sqrt
 
-class CollectSoundStream(val context: Context) : ComponentActivity() {
+class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSoundViewModel) : ComponentActivity() {
     companion object {
         const val LOG_NAME: String = "AudioSensor"
+        fun findNearestEnumByFrequency(frequency: Double): enum_musicStep? {
+            return enum_musicStep.values().minByOrNull { Math.abs(it.frequency - frequency) }
+        }
     }
 
     private val sampleRate = 44100 // サンプリングレート
@@ -36,14 +41,6 @@ class CollectSoundStream(val context: Context) : ComponentActivity() {
 
     private var isRecoding: Boolean = false // 録音しているか
     private var run: Boolean = false // 音解析をしているか
-
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val viewModel = ViewModelProvider(this)[DetectSoundViewModel::class.java]
-    }
-
 
     // 録音開始時の初期設定
     // period: オーディオ処理のインターバル
@@ -155,9 +152,19 @@ class CollectSoundStream(val context: Context) : ComponentActivity() {
                     }
                 }
                 // 最大振幅の周波数
-                val maxFrequency: Int = (maxIndex * sampleRate / fftBuffer.size)
+                val maxFrequency: Double = (((maxIndex * sampleRate / fftBuffer.size)/2).toDouble())
                 Log.d(LOG_NAME, "maxFrequency = $maxFrequency")
-//                viewModel.setValue(maxFrequency)
+
+                val nearestEnum = findNearestEnumByFrequency(maxFrequency)
+
+
+                if (nearestEnum != null) {
+                    detectSoundViewModel.setOnkai(nearestEnum.jpName)
+                    println("Nearest Enum: ${nearestEnum.jpName} (${nearestEnum.names}), Frequency: ${nearestEnum.frequency},Maxrequency = $maxFrequency")
+                } else {
+                    println("No matching enum found.")
+                }
+
 
                 // stop用のフラグ
                 if (run) {
@@ -169,5 +176,8 @@ class CollectSoundStream(val context: Context) : ComponentActivity() {
         // 初回の呼び出し
         hnd0.post(rnb0)
     }
+
+
+
 }
 

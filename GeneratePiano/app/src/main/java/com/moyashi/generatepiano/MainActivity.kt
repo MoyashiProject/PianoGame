@@ -43,15 +43,16 @@ class MainActivity : ComponentActivity() {
                     startDestination = Route.FIRST.name, //最初の画面をMainScreenに設定
                     modifier = Modifier.padding(it)
                 ) {
-                    //画面1
+                    //練習曲一覧
                     composable(route = Route.FIRST.name) {
                         MainScreen(viewModel, navController)
                     }
                     //画面２
                     composable(route = Route.SECOND.name) {
-                        //よっしーの作成した画面を設定する
+                        //楽譜表示画面
+                        MusicSheetScreen()
                     }
-                    // 画面3
+                    // 詳細画面
                     composable(
                         route = "${Route.THIRD.name}/{practiceId}",
                         arguments = listOf(navArgument("practiceId") { type = NavType.LongType })
@@ -63,7 +64,7 @@ class MainActivity : ComponentActivity() {
                     composable(
                         route = Route.FOURTH.name
                     ) {
-
+                        //楽譜作成画面
                     }
                 }
             }

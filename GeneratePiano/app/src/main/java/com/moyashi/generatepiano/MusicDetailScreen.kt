@@ -44,6 +44,11 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController) {
                     style = typography.body1,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
+                Text(
+                    text="右手:${practice.right_hand}",
+                    style = typography.body1,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
             } else {
                 Text("Practice not found.")
             }

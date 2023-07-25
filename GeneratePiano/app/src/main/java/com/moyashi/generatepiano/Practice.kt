@@ -1,7 +1,6 @@
 package com.moyashi.generatepiano
 
 import androidx.room.*
-import com.moyashi.generatepiano.modelData.ModelScoreSheet
 import java.util.*
 
 @Entity(tableName = "practices") //テーブルネームがpracticesというエンティティ
@@ -14,6 +13,5 @@ data class Practice(
     @TypeConverters(StringListTypeConverter::class) // Converterの指定
     val right_hand: List<String>,
     val left_hand: List<String>
-
 )
 

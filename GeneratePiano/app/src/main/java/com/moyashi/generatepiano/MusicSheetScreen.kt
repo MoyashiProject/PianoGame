@@ -5,38 +5,86 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 
 @Composable
 fun MusicSheetScreen() {
+//    val clefImage = ImageVector.vectorResource(id = R.drawable.img_clef)
+//    val painter = rememberVectorPainter(image = clefImage)
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         // Draw the line on the Canvas
-        Canvas(
-            modifier = Modifier.fillMaxSize()
-//吉田
-        ) {
-            for (i in 0 until 5) {
-                val y = (i + 1) * size.height / 6 // 6等分した位置に線を描画する
-                drawLine(
-                    color = Color.Blue,
-                    start = Offset(0f, y),
-                    end = Offset(size.width, y),
-                    strokeWidth = 5f
-                )
+        Box(
+            contentAlignment = Alignment.Center
+        ){
+            Canvas(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 32.dp)
+                    .background(Color.White)
+            ) {
+                for (i in 0 .. 4) {
+                    val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
+                    drawLine(
+                        color = Color.Black,
+                        start = Offset(0f, y),
+                        end = Offset(size.width, y),
+                        strokeWidth = 5f
+                    )
+                }
             }
         }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.CenterStart
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.clef),
+                contentDescription = null,
+                modifier = Modifier.size(240.dp)
+            )
+        }
     }
+
 }
+@Preview
+@Composable
+fun Preview(){
+    MusicSheetScreen()
+}
+
 @Composable
 fun LockScreenOrientation(orientation: Int) {
     val context = LocalContext.current
@@ -56,3 +104,4 @@ fun Context.findActivity(): Activity? = when (this) {
     is ContextWrapper -> baseContext.findActivity()
     else -> null
 }
+

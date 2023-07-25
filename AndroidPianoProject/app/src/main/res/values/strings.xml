@@ -1,3 +1,5 @@
 <resources>
+    <string name="app_name">AndroidPianoPractice</string>
+    <string name="title_activity_stream_sound_test">StreamSoundTest</string>
     <string name="app_name">AndroidPianoProject</string>
 </resources>

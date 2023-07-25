@@ -11,6 +11,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-}
+rootProject.name = "AndroidPianoPractice"
 rootProject.name = "AndroidPianoProject"
 include ':app'

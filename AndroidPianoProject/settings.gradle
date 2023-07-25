@@ -11,6 +11,5 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
-}
 
 include ':app'

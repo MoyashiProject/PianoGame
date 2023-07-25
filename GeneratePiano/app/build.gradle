@@ -81,4 +81,10 @@ dependencies {
 
     implementation "androidx.compose.runtime:runtime-livedata:latest"
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    final def accompanist_version = '0.11.0'
+    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+
+    implementation("androidx.compose.material:material:1.3.1")
 }

@@ -16,8 +16,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,16 +37,21 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import com.moyashi.generatepiano.backgroundTask.CollectSoundStream
 
 @Composable
-fun MusicSheetScreen() {
-//    val clefImage = ImageVector.vectorResource(id = R.drawable.img_clef)
-//    val painter = rememberVectorPainter(image = clefImage)
+fun MusicSheetScreen(viewModel:DetectSoundViewModel) {
+
+    val counter = viewModel.counter.observeAsState()
+
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
     Box(
         modifier = Modifier.fillMaxSize()
@@ -76,13 +87,11 @@ fun MusicSheetScreen() {
                 modifier = Modifier.size(240.dp)
             )
         }
+        counter.value?.let { count ->
+            Text("$count", textAlign = TextAlign.Center,modifier = Modifier.width(150.dp), fontSize = 50.sp)
+        }
     }
 
-}
-@Preview
-@Composable
-fun Preview(){
-    MusicSheetScreen()
 }
 
 @Composable

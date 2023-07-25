@@ -1,5 +1,6 @@
 package com.moyashi.generatepiano
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,20 +9,29 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.moyashi.generatepiano.backgroundTask.CollectSoundStream
 import com.moyashi.generatepiano.ui.theme.GeneratePianoTheme
 
 class MainActivity : ComponentActivity() {
-    private val viewModel = PracticeViewModel()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val context: Context = this
+        val viewModel = PracticeViewModel()
+        val detectSoundViewModel = ViewModelProvider(this)[DetectSoundViewModel::class.java]
+        val sound = CollectSoundStream(context,detectSoundViewModel)
+        sound.start(100)
+
         setContent {
-            MyAppScreen(viewModel)
+            MyAppScreen(viewModel,detectSoundViewModel)
         }
     }
 
@@ -34,7 +44,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MyAppScreen(viewModel: PracticeViewModel) {
+    fun MyAppScreen(viewModel: PracticeViewModel,detectSoundViewModel: DetectSoundViewModel) {
         val navController = rememberNavController()
 
         GeneratePianoTheme {
@@ -51,7 +61,7 @@ class MainActivity : ComponentActivity() {
                     //画面２
                     composable(route = Route.SECOND.name) {
                         //楽譜表示画面
-                        MusicSheetScreen()
+                        MusicSheetScreen(detectSoundViewModel)
                     }
                     // 詳細画面
                     composable(

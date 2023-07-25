@@ -2,13 +2,17 @@ package com.moyashi.generatepiano
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,8 +35,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
@@ -195,7 +201,37 @@ class MainActivity : ComponentActivity() {
     //楽譜表示
     fun ScoreSheetView() {
         //よっしーの担当
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        DrawLineExample()
     }
+
+    @Composable
+    fun DrawLineExample() {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            // Draw the line on the Canvas
+            DrawLineCanvas(Modifier.fillMaxSize())
+        }
+    }
+
+    @Composable
+    fun DrawLineCanvas(modifier: Modifier) {
+        Canvas(
+            modifier = modifier
+        ) {
+            for (i in 0 until 5) {
+                val y = (i + 1) * size.height / 6 // 6等分した位置に線を描画する
+                drawLine(
+                    color = Color.Blue,
+                    start = Offset(0f, y),
+                    end = Offset(size.width, y),
+                    strokeWidth = 5f
+                )
+            }
+        }
+    }
+
     @Composable
     fun PracticeItem(practice: Practice) {
         val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
@@ -224,4 +260,7 @@ class MainActivity : ComponentActivity() {
 
 
 }
+
+
+
 

@@ -26,7 +26,7 @@ fun PracticeItem(
             .fillMaxWidth()
             .padding(16.dp)
             .clickable {
-                navController.navigate("detail/${practice.id}")
+                navController.navigate("${MainActivity.Route.THIRD.name}/${practice.id}")
             }
     ) {//title表示
         Text(

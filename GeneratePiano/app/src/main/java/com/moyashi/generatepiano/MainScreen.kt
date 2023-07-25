@@ -46,7 +46,7 @@ fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
                 PracticeItem(practice, navController)
             }
         }
-        Row( //practiceList追加するためコード。多分この機能消す。その代わりに曲を検索できるようにする予定
+        Row( //曲を検索
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -69,6 +69,31 @@ fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Text("search")
+            }
+        }
+        Row( //曲を追加
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { it -> text = it },
+                label = { Text("Practice") },
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .weight(1f)
+            )
+            Spacer(Modifier.size(16.dp))
+            Button(
+                onClick = {
+                    if (text.isEmpty()) return@Button
+                    viewModel.postPractice(text)
+                    text = ""
+                },
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Text("ADD")
             }
         }
     }

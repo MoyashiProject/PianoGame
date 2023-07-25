@@ -12,6 +12,9 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -19,9 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-fun MusicDetailScreen(practice: Practice?, navController: NavHostController) {
+fun MusicDetailScreen(practice: Practice?, navController: NavHostController, viewModel: PracticeViewModel) {
     //MainScrennでクリックされたPracticeItemの詳細を表示
     //画面下で削除か演奏のボタンを選択
+    val selectedPractice by remember { mutableStateOf(practice) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,10 +73,20 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController) {
             }
             Button(
                 onClick = {
-
+                    navController.navigate(MainActivity.Route.FOURTH.name)
                 }
             ) {
                 Text("練習する")
+            }
+            Button(
+                onClick = {
+                    selectedPractice?.let { practiceToDelete ->
+                        viewModel.deletePractice(practice = practiceToDelete)
+                        navController.navigate((MainActivity.Route.FIRST.name))
+                    }
+                }
+            ) {
+                Text("削除する")
             }
         }
     }

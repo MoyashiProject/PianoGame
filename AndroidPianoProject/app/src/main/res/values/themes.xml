@@ -2,4 +2,5 @@
 <resources>
 
     <style name="Theme.AndroidPianoPractice" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.AndroidPianoProject" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

@@ -1,5 +1,6 @@
 package com.moyashi.generatepiano
 
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -73,7 +74,7 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
             }
             Button(
                 onClick = {
-                    navController.navigate(MainActivity.Route.FOURTH.name)
+                    navController.navigate(MainActivity.Route.SECOND.name)
                 }
             ) {
                 Text("練習する")

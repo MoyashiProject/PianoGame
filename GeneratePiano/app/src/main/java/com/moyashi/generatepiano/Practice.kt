@@ -14,4 +14,3 @@ data class Practice(
     val right_hand: List<String>,
     val left_hand: List<String>
 )
-

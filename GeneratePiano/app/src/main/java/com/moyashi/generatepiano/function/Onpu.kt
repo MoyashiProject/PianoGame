@@ -18,8 +18,8 @@ import kotlin.math.sin
 fun ShibuOnpu(){
     Canvas(modifier = Modifier.fillMaxSize()) {
         // Draw the ellipse (similar to the previous code)
-        rotate(degrees = -21F) {
-            scale(scaleX = 0.7f, scaleY = 0.37f) {
+        rotate(degrees = -30F) {
+            scale(scaleX = 0.65f, scaleY = 6.4f.dp.toPx() / 22.1.dp.toPx()) {
                 drawCircle(Color.Black, radius = 22.1.dp.toPx())
             }
         }
@@ -27,8 +27,8 @@ fun ShibuOnpu(){
         // Calculate the starting and ending points for the vertical line
         val centerX = size.width / 2
         val centerY = size.height / 2
-        val lineStart = Offset(centerX + 12.dp.toPx(), centerY - 70.dp.toPx())
-        val lineEnd = Offset(centerX + 12.dp.toPx(), centerY)
+        val lineStart = Offset(centerX + 10.dp.toPx(), centerY - 70.dp.toPx())
+        val lineEnd = Offset(centerX + 10.dp.toPx(), centerY)
 
         // Draw the vertical line
         drawLine(

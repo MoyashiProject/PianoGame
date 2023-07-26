@@ -49,95 +49,93 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
 
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
     Box(
-        modifier = Modifier.fillMaxSize().background(Color(red = 234, green = 65,blue=39))
+        modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
-        Column(modifier = Modifier.fillMaxSize()){
-            Row(
-                modifier = Modifier
-                    .weight(1F)
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Box(
-                    contentAlignment = Alignment.Center
-                ){
-
-                    Box{
-                        Canvas(
-                            modifier = Modifier
-                                .width(((practice?.right_hand?.size)?.times(67))!!.dp)
-                                .height(500.dp)
-                                .padding(vertical = 32.dp)
-                                .background(Color(red = 234, green = 65,blue=39))
-                        ) {
-                            for (i in 0 .. 4) {
-                                val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
-                                drawLine(
-                                    color = Color.White,
-                                    start = Offset(0f, y),
-                                    end = Offset(size.width, y),
-                                    strokeWidth = 5f
-                                )
-                            }
-                        }
-                        Row(modifier = Modifier.padding(start = 110.dp)){
-                            practice?.right_hand?.forEach{ hand ->
-                                Box(modifier = Modifier.padding(start = 45.dp)){
-                                    setOnpu(name = "${hand}")
+        Column(modifier = Modifier.fillMaxSize().horizontalScroll(rememberScrollState())
+        ){
+            Box(){
+                Column{
+                    Row(
+                        modifier = Modifier
+                            .weight(1F)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ){
+                            Box{
+                                Canvas(
+                                    modifier = Modifier
+                                        .width(((practice?.right_hand?.size)?.times(45))!!.dp)
+                                        .height(500.dp)
+                                        .padding(vertical = 32.dp)
+                                        .background(Color.White)
+                                ) {
+                                    for (i in 0 .. 4) {
+                                        val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
+                                        drawLine(
+                                            color = Color.Black,
+                                            start = Offset(0f, y),
+                                            end = Offset(size.width, y),
+                                            strokeWidth = 5f
+                                        )
+                                    }
                                 }
+
                             }
                         }
+
                     }
+                    Row(
+                        modifier = Modifier
+                            .weight(1F)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ){
 
-
-                }
-
-            }
-            Row(
-                modifier = Modifier
-                    .weight(1F)
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Box(
-                    contentAlignment = Alignment.Center
-                ){
-
-                    Box{
-                        Canvas(
-                            modifier = Modifier
-                                .width(((practice?.right_hand?.size)?.times(67))!!.dp)
-                                .height(500.dp)
-                                .padding(vertical = 32.dp)
-                                .background(Color(red = 234, green = 65,blue=39))
-                        ) {
-                            for (i in 0 .. 4) {
-                                val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
-                                drawLine(
-                                    color = Color.White,
-                                    start = Offset(0f, y),
-                                    end = Offset(size.width, y),
-                                    strokeWidth = 5f
-                                )
-                            }
-                        }
-                        Row(modifier = Modifier.padding(start = 110.dp)){
-                            practice?.right_hand?.forEach{ hand ->
-                                Box(modifier = Modifier.padding(start = 45.dp)){
-                                    setOnpu(name = "${hand}")
+                            Box{
+                                Canvas(
+                                    modifier = Modifier
+                                        .width(((practice?.right_hand?.size)?.times(45))!!.dp)
+                                        .height(500.dp)
+                                        .padding(vertical = 32.dp)
+                                        .background(Color.White)
+                                ) {
+                                    for (i in 0 .. 4) {
+                                        val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
+                                        drawLine(
+                                            color = Color.Black,
+                                            start = Offset(0f, y),
+                                            end = Offset(size.width, y),
+                                            strokeWidth = 5f
+                                        )
+                                    }
                                 }
+
                             }
+
+
                         }
+
                     }
-
-
                 }
-
+                Row(modifier = Modifier.padding(start = 120.dp)){
+                    practice?.right_hand?.forEach{ hand ->
+                        Box(modifier = Modifier.padding(start = 44.dp).offset(y = (-90).dp)){
+                            setOnpu(name = "${hand}")
+                        }
+                        Text(text = "${hand}")
+                    }
+                }
             }
+
+
         }
 
 
@@ -179,24 +177,29 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
 }
 @Composable
 fun setOnpu(name: String){
-//    BoxWithConstraints {
-//        val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
-//        val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
-//
-//    }
     for (pre in enum_musicStep.values()){
-        if(pre.names.equals(name)){
-            if(pre.id > 51){
-                //音階が真ん中シ（シ３)よりも上だった場合のプログラム
-                Box(modifier = Modifier.offset(y = (-7.5).times(pre.id-51).dp)){
+        if(pre.names == name){
+            Box(modifier = Modifier.offset(y = (-6.5).times(pre.id-51).dp)){
                     ShibuOnpu()
-                    Text("${pre.jpName}")
+
                 }
-            }else{
-                Box(modifier = Modifier.offset(y = (17.3).times(51-pre.id).dp)){
-                    ShibuOnpu()
-                }
-            }
+//            if(pre.id > 51){
+//                Text("${pre.jpName}")
+//                //音階が真ん中シ（シ３)よりも上だった場合のプログラム
+//                Box(modifier = Modifier.offset(y = (-6.5).times(pre.id-51).dp)){
+//                    ShibuOnpu()
+//
+//                }
+//            }else{
+//                if(pre.id > 38){
+//                    Box(modifier = Modifier.offset(y = (6.5).times(51-pre.id).dp)){
+//                        ShibuOnpu()
+//                    }
+//                }else{
+//
+//                }
+//
+//            }
         }
     }
 }

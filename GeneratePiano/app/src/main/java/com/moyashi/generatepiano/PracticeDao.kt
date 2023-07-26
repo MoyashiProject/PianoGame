@@ -12,4 +12,9 @@ interface PracticeDao {
 
     @Delete
     fun delete(practice: Practice) //practicesの削除
+
+    @Query("SELECT * FROM practices WHERE title LIKE '%' || :searchText || '%'")
+// practicesテーブルから、title列が検索テキストに部分一致する練習曲を取得するためのクエリ
+    fun serachPracticesByTitle(searchText: String): List<Practice>
+// 検索テキストを受け取り、結果として該当する練習曲のリストを返す関数
 }

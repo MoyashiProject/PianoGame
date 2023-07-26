@@ -14,6 +14,4 @@ data class Practice(
     @TypeConverters(StringListTypeConverter::class) // Converterの指定
     val right_hand: List<String>,
     val left_hand: List<String>
-
 )
-

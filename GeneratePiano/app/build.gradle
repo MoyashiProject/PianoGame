@@ -9,6 +9,10 @@ android {
     compileSdk 33
 
     defaultConfig {
+
+
+
+
         applicationId "com.moyashi.generatepiano"
         minSdk 24
         targetSdk 33

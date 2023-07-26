@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.ActivityInfo
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -81,7 +82,7 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
                         practice?.right_hand?.forEach{ hand ->
                             Text(text="${hand}")
                             Box(modifier = Modifier.padding(start = 45.dp)){
-                                setOnpu(name = "${hand}", modifier = Modifier.fillMaxHeight())
+                                setOnpu(name = "${hand}")
                             }
                         }
                     }
@@ -114,22 +115,28 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
 
 }
 @Composable
-fun setOnpu(name: String,modifier: Modifier){
-    BoxWithConstraints {
-        val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
-        val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
-        for (pre in enum_musicStep.values()){
-            if(pre.names.equals(name)){
-                if(pre.id > 51){
-                    //音階が真ん中シ（シ３)よりも上だった場合のプログラム
+fun setOnpu(name: String){
+//    BoxWithConstraints {
+//        val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
+//        val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
+//
+//    }
+    for (pre in enum_musicStep.values()){
+        if(pre.names.equals(name)){
+            if(pre.id > 51){
+                //音階が真ん中シ（シ３)よりも上だった場合のプログラム
+                Box(modifier = Modifier.offset(y = (-17).times(pre.id-51).dp)){
                     ShibuOnpu()
-                }else{
-
+                    Log.d("aho","${pre.id}")
+                }
+            }else{
+                Box(modifier = Modifier.offset(y = (17).times(51-pre.id).dp)){
+                    ShibuOnpu()
+                    Log.d("aho","${pre.id}")
                 }
             }
         }
     }
-
 }
 
 @Preview

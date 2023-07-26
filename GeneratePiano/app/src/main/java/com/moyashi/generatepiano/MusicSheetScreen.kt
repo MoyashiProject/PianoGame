@@ -10,13 +10,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moyashi.generatepiano.backgroundTask.GenerateScore
+import com.moyashi.generatepiano.enum.enum_musicStep
 import com.moyashi.generatepiano.function.ShibuOnpu
 import java.util.Date
 
@@ -76,16 +77,16 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
                             )
                         }
                     }
-
-                }
-                Row(modifier = Modifier.padding(start = 110.dp)){
-                    practice?.right_hand?.forEach{ hand ->
-                        Text(text="${hand}")
-                        Box(modifier = Modifier.padding(start = 45.dp)){
-                            ShibuOnpu()
+                    Row(modifier = Modifier.padding(start = 110.dp)){
+                        practice?.right_hand?.forEach{ hand ->
+                            Text(text="${hand}")
+                            Box(modifier = Modifier.padding(start = 45.dp)){
+                                setOnpu(name = "${hand}", modifier = Modifier.fillMaxHeight())
+                            }
                         }
                     }
                 }
+
 
             }
 
@@ -113,7 +114,21 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
 
 }
 @Composable
-fun setOnpu(name: String){
+fun setOnpu(name: String,modifier: Modifier){
+    BoxWithConstraints {
+        val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
+        val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
+        for (pre in enum_musicStep.values()){
+            if(pre.names.equals(name)){
+                if(pre.id > 51){
+                    //音階が真ん中シ（シ３)よりも上だった場合のプログラム
+                    ShibuOnpu()
+                }else{
+
+                }
+            }
+        }
+    }
 
 }
 

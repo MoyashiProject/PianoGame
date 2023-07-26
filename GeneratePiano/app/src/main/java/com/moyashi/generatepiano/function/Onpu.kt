@@ -18,24 +18,24 @@ import kotlin.math.sin
 fun ShibuOnpu(){
     Canvas(modifier = Modifier.fillMaxSize()) {
         // Draw the ellipse (similar to the previous code)
-        rotate(degrees = -20F) {
-            scale(scaleX = 1f, scaleY = 0.5f) {
-                drawCircle(Color.Black, radius = 20.dp.toPx())
+        rotate(degrees = -21F) {
+            scale(scaleX = 0.7f, scaleY = 0.37f) {
+                drawCircle(Color.Black, radius = 22.1.dp.toPx())
             }
         }
 
         // Calculate the starting and ending points for the vertical line
         val centerX = size.width / 2
         val centerY = size.height / 2
-        val lineStart = Offset(centerX + 15.dp.toPx(), centerY - 100.dp.toPx())
-        val lineEnd = Offset(centerX + 15.dp.toPx(), centerY)
+        val lineStart = Offset(centerX + 12.dp.toPx(), centerY - 70.dp.toPx())
+        val lineEnd = Offset(centerX + 12.dp.toPx(), centerY)
 
         // Draw the vertical line
         drawLine(
             color = Color.Black,
             start = lineStart,
             end = lineEnd,
-            strokeWidth = 4.dp.toPx()
+            strokeWidth = 3.dp.toPx()
         )
     }
 }

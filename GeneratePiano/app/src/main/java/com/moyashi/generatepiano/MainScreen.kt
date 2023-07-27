@@ -3,6 +3,7 @@ package com.moyashi.generatepiano
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
@@ -30,11 +30,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -78,6 +80,7 @@ fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
             ModalBottomSheetLayout(sheetContent = { BottomSheet(viewModel)}, sheetState = sheetState, modifier = Modifier.fillMaxSize()) {
                 LazyColumn( //リストビュー表示
                     modifier = Modifier
+                        .padding(top = 60.dp)
                         .fillMaxWidth() //画面いっぱいに表示
                         .weight(1f)
                 ) {//リストビューのアイテム表示
@@ -104,40 +107,62 @@ fun BottomSheet(viewModel: PracticeViewModel) {
             style = MaterialTheme.typography.labelMedium
         )
         Spacer(modifier = Modifier.height(32.dp))
-        val selectedOption = remember { mutableStateOf("Option1") }
+        val selectHard: MutableState<Boolean> = remember { mutableStateOf(false) }
 
         // 水平方向にレイアウトするRow
         Row(
-            modifier = Modifier.padding(16.dp), // paddingを設定
-            horizontalArrangement = Arrangement.SpaceEvenly // 子要素の間隔を均等にする
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // ラジオボタン1
-            Text("難しい")
-            RadioButton(
-                selected = selectedOption.value == "Option1", // 選択されたかどうか
-                onClick = { selectedOption.value = "Option1" }, // クリックされたときの処理
-            )
-
-            // ラジオボタン2
-            Text("簡単")
-            RadioButton(
-                selected = selectedOption.value == "Option2", // 選択されたかどうか
-                onClick = { selectedOption.value = "Option2" } // クリックされたときの処理
-            )
+            Box(modifier = Modifier
+                .weight(1F)
+                .fillMaxWidth()
+                .padding(16.dp),
+                contentAlignment = Alignment.Center){
+                Row{
+                    Text("難しい")
+                    RadioButton(
+                        selected = selectHard.value, // 選択されたかどうか
+                        onClick = { selectHard.value = true }, // クリックされたときの処理
+                    )
+                }
+            }
+            Box(modifier = Modifier
+                .weight(1F)
+                .fillMaxWidth()
+                .padding(16.dp),
+                contentAlignment = Alignment.Center){
+                Row{
+                    Text(text = "簡単")
+                    RadioButton(
+                        selected = selectHard.value == false, // 選択されたかどうか
+                        onClick = { selectHard.value = false }, // クリックされたときの処理
+                    )
+                }
+            }
         }
-        OutlinedTextField(
-            value = text,
-            onValueChange = { it -> text = it },
-            label = { Text("Practice") },
-        )
-        Button(
-            onClick = {
-                if (text.isEmpty()) return@Button
-                viewModel.postPractice(text)
-                text = ""
-            },
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("ADD")
+            OutlinedTextField(
+                value = text,
+                onValueChange = { it -> text = it },
+                label = { Text("名前をつけてください") },
+                modifier = Modifier.fillMaxWidth() // OutlinedTextFieldを画面の横全体に広げる
+            )
+            Button(
+                onClick = {
+                    if (text.isEmpty()) return@Button
+                    viewModel.postPractice(text,selectHard.value)
+                    text = ""
+                },
+                modifier = Modifier.padding(vertical = 16.dp) // 上下に16dpの余白を追加して中央に配置する
+            ) {
+                Text("作成")
+            }
         }
+
     }
 }

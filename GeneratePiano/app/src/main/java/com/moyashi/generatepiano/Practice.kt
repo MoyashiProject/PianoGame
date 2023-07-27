@@ -10,6 +10,7 @@ data class Practice(
     val id: Long,
     val title: String,
     val created_at: Date = Date(),
+    val difficult: Boolean,
     @TypeConverters(StringListTypeConverter::class) // Converterの指定
     val right_hand: List<String>,
     val left_hand: List<String>

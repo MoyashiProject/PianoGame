@@ -231,18 +231,6 @@ fun clef(drawable: String){
 }
 
 
-@Preview
-@Composable
-fun View(){
-    val scores = GenerateScore().GenerateEasy()
-    val detectSoundViewModel = DetectSoundViewModel()
-    Box(modifier = Modifier
-        .width(1600.dp)
-        .height(900.dp)){
-        MusicSheetScreen(practice = Practice(1, "aaaa", created_at = Date(),scores,scores), viewModel = detectSoundViewModel)
-        ShibuOnpu(id = 40)
-    }
-}
 
 @Composable
 fun ViewFraction(upText: Int, downText: Int,x: Int, y1: Int, y2: Int){

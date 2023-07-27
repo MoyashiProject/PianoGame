@@ -15,9 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,13 +23,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
+fun MainScreen(
+    viewModel: PracticeViewModel,
+    searchViewModel: SearchViewModel,
+    navController: NavHostController
+) {
     val practiceList = viewModel.retrievePracticeList()
     var text: String by remember { mutableStateOf("") }
 
@@ -39,6 +39,20 @@ fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
         TopAppBar( //アプリバーを表示
             title = { Text("練習曲一覧") }
         )
+
+        OutlinedTextField(
+            value = text,
+            onValueChange = { newText ->
+                text = newText
+                searchViewModel.performSearch(newText)
+            },
+            label = { Text("検索")},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+        val searchResults by searchViewModel.searchResults.collectAsState()
+
         LazyColumn( //リストビュー表示
             modifier = Modifier
                 .fillMaxWidth() //画面いっぱいに表示

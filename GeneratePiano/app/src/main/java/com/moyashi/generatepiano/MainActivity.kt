@@ -35,7 +35,9 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun MyAppScreen(viewModel: PracticeViewModel) {
+        val practiceDao = RoomApplication.database.practiceDao()
         val navController = rememberNavController()
+        val searchViewModel = SearchViewModel(practiceDao)
 
         GeneratePianoTheme {
             Scaffold {
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //練習曲一覧
                     composable(route = Route.FIRST.name) {
-                        MainScreen(viewModel, navController)
+                        MainScreen(viewModel, searchViewModel, navController)
                     }
                     //画面２
                     composable(route = Route.SECOND.name) {

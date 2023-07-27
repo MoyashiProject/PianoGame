@@ -34,24 +34,23 @@ fun MainScreen(
 ) {
     val practiceList = viewModel.retrievePracticeList()
     var text: String by remember { mutableStateOf("") }
-
+    var searchText: String by remember { mutableStateOf("") }
     Column { //列で表示
         TopAppBar( //アプリバーを表示
             title = { Text("練習曲一覧") }
         )
 
         OutlinedTextField(
-            value = text,
+            value = searchText,
             onValueChange = { newText ->
-                text = newText
-                searchViewModel.performSearch(newText)
+                searchText = newText
+                viewModel.loadIdentifyPractice(newText)
             },
             label = { Text("検索")},
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         )
-        val searchResults by searchViewModel.searchResults.collectAsState()
 
         LazyColumn( //リストビュー表示
             modifier = Modifier

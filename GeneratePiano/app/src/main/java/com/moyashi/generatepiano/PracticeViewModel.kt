@@ -1,11 +1,11 @@
 package com.moyashi.generatepiano
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moyashi.generatepiano.backgroundTask.GenerateScore
-import com.moyashi.generatepiano.modelData.ModelScoreSheet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -19,10 +19,19 @@ class PracticeViewModel : ViewModel() {
         loadPractice()
     }
 
-    fun postPractice(title: String) {
+    fun postPractice(title: String, hardMode: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val scores = GenerateScore().GenerateEasy()
-            val newPractice = Practice(id = 0, title = title, created_at = Date(),scores,scores)
+
+            val scores :List<String>
+
+            if(hardMode){
+                scores = GenerateScore().GenerateHard()
+                println("難しいモード")
+            }else{
+                scores = GenerateScore().GenerateEasy()
+
+            }
+            val newPractice = Practice(id = 0, title = title, created_at = Date(),hardMode,scores,scores)
             dao.post(newPractice)
             loadPractice()
         }
@@ -47,6 +56,15 @@ class PracticeViewModel : ViewModel() {
         viewModelScope.launch {
             val practices = withContext(Dispatchers.Default) {
                 dao.getALL()
+            }
+            practiceList.clear()
+            practiceList.addAll(practices)
+        }
+    }
+    fun loadIdentifyPractice(title:String){
+        viewModelScope.launch {
+            val practices = withContext(Dispatchers.Default){
+                dao.serachPracticesByTitle(title)
             }
             practiceList.clear()
             practiceList.addAll(practices)

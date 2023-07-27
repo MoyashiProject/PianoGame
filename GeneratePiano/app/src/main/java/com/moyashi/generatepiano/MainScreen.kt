@@ -45,7 +45,11 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
+fun MainScreen(
+    viewModel: PracticeViewModel,
+    searchViewModel: SearchViewModel,
+    navController: NavHostController
+) {
     val practiceList = viewModel.retrievePracticeList()
 
 

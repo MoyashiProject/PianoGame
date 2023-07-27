@@ -61,4 +61,13 @@ class PracticeViewModel : ViewModel() {
             practiceList.addAll(practices)
         }
     }
+    fun loadIdentifyPractice(title:String){
+        viewModelScope.launch {
+            val practices = withContext(Dispatchers.Default){
+                dao.serachPracticesByTitle(title)
+            }
+            practiceList.clear()
+            practiceList.addAll(practices)
+        }
+    }
 }

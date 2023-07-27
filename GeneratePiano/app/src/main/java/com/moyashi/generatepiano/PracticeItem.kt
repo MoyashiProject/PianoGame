@@ -20,7 +20,6 @@ fun PracticeItem(
     navController: NavHostController
 ) {
     val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
-
     Column(
         modifier = Modifier
             .fillMaxWidth()

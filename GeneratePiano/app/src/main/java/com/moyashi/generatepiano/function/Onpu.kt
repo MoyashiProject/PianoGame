@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,7 +23,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun ShibuOnpu(){
+fun ShibuOnpu(id:Int){
 
     val ellipseWidth = 22.5.dp
     val ellipseHeight = 14.dp
@@ -30,7 +31,7 @@ fun ShibuOnpu(){
     val lineLength = 50.dp
     Canvas(
         modifier = Modifier
-            .size(100.dp)
+            .width(40.dp)
     ) {
         // 楕円を描画する
         rotate(degrees = (-20F)){
@@ -43,6 +44,7 @@ fun ShibuOnpu(){
                 size = Size(ellipseWidth.toPx(), ellipseHeight.toPx())
             )
         }
+
 
         // 黒い線を描画する
         drawLine(
@@ -57,14 +59,25 @@ fun ShibuOnpu(){
             ),
             strokeWidth = lineWidth.toPx()
         )
+        if(id == 40){
+            drawLine(
+                color = Color.Black,
+                start = Offset(
+                    x = (0f),
+                    y = (size.height) / 2
+                ),
+                end = Offset(
+                    x = size.width,
+                    y = (size.height) / 2
+                ),
+                strokeWidth = 5F
+            )
+        }
+
     }
-}
-@Composable
-internal fun Float.pxToDp(): Dp {
-    return (this / LocalDensity.current.density).dp
 }
 @Preview
 @Composable
 fun View(){
-    ShibuOnpu()
+    ShibuOnpu(id = 40)
 }

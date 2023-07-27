@@ -63,14 +63,14 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
                     Row(
                         modifier = Modifier
                             .weight(1F)
-                            .fillMaxWidth(),
+                            .fillMaxWidth().padding(start = 150.dp),
                     ){
                         Gosenhu(practice)
                     }
                     Row(
                         modifier = Modifier
                             .weight(1F)
-                            .fillMaxWidth(),
+                            .fillMaxWidth().padding(start = 150.dp),
                     ){
                         GosenhuShita(practice = practice)
                     }
@@ -120,7 +120,7 @@ fun Gosenhu(practice: Practice?){
                     }
                 }
                 if (id != null) {
-                    SetShibuOnpu(id = id)
+                    SetShibuOnpu(id = id, position = 1)
                 }
             }
         }
@@ -153,22 +153,37 @@ fun GosenhuShita(practice: Practice?){
                         }
                     }
                 }
-
+                if (id != null) {
+                    SetShibuOnpu(id = id, position = 2)
+                }
             }
         }
     }
 }
 @Composable
-fun SetShibuOnpu(id:Int){
-    if(id >= 37){
+fun SetShibuOnpu(id:Int,position:Int){
+    if(position == 1){
+        if(id >= 37){
 
-        Box(modifier = Modifier.offset(y = (-5).times(id - 51).dp).fillMaxWidth()){
-            Box(modifier = Modifier.offset(y = (90).dp)){
-                ShibuOnpu(id = id)
+            Box(modifier = Modifier.offset(y = (-5).times(id - 51).dp).fillMaxWidth()){
+                Box(modifier = Modifier.offset(y = (90).dp)){
+                    ShibuOnpu(id = id)
 
+                }
+                Text(text = "$id")
             }
-            Text(text = "$id")
         }
+    } else{
+        if(id < 37){
+            Box(modifier = Modifier.offset(y = (-4.98).times(id - 51).dp).fillMaxWidth()){
+                Box(modifier = Modifier.offset(y = (-15).dp)){
+                    ShibuOnpu(id = id)
+
+                }
+                Text(text = "$id")
+            }
+        }
+
     }
 
 

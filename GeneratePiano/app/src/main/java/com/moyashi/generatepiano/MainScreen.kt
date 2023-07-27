@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,6 +30,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -38,6 +41,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
@@ -47,7 +51,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     viewModel: PracticeViewModel,
-    searchViewModel: SearchViewModel,
     navController: NavHostController
 ) {
     val practiceList = viewModel.retrievePracticeList()
@@ -58,17 +61,21 @@ fun MainScreen(
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded }
     )
     val coroutineScope = rememberCoroutineScope()
-
+    var searchText: String by remember { mutableStateOf("") }
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch { sheetState.hide() }
     }
+    val topAppBarState = rememberTopAppBarState()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
 
     Scaffold(
-        topBar = { TopAppBar(
-            title = {
-                Text("練習曲一覧")
-            },
-        ) },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("練習曲一覧") },
+                scrollBehavior = scrollBehavior,
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 coroutineScope.launch {
@@ -81,19 +88,44 @@ fun MainScreen(
         }
     ) {
         Column {
+            Column(modifier=Modifier.padding(it)){
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = { newText ->
+                        searchText = newText
+                        viewModel.loadIdentifyPractice(newText)
+                    },
+                    label = { Text("検索")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp, horizontal = 32.dp),
+                )
+            }
+
             ModalBottomSheetLayout(sheetContent = { BottomSheet(viewModel)}, sheetState = sheetState, modifier = Modifier.fillMaxSize()) {
                 LazyColumn( //リストビュー表示
                     modifier = Modifier
-                        .padding(top = 60.dp)
                         .fillMaxWidth() //画面いっぱいに表示
-                        .weight(1f)
+                        .weight(1f),
                 ) {//リストビューのアイテム表示
+
                     items(practiceList) { practice ->
                         PracticeItem(practice, navController)
                     }
                 }
             }//列で表示
+            OutlinedTextField(
 
+                value = searchText,
+                onValueChange = { newText ->
+                    searchText = newText
+                    viewModel.loadIdentifyPractice(newText)
+                },
+                label = { Text("検索")},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
         }
     }
 

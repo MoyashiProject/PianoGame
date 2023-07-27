@@ -9,6 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 
@@ -29,7 +30,7 @@ class MainActivity : ComponentActivity() {
         val detectSoundViewModel = ViewModelProvider(this)[DetectSoundViewModel::class.java]
         val sound = CollectSoundStream(context,detectSoundViewModel)
         sound.start(100)
-
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MyAppScreen(viewModel,detectSoundViewModel)
         }
@@ -46,7 +47,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun MyAppScreen(viewModel: PracticeViewModel,detectSoundViewModel: DetectSoundViewModel) {
         val navController = rememberNavController()
-        val searchViewModel = SearchViewModel(practiceDao)
 
         GeneratePianoTheme {
             Scaffold {
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //練習曲一覧
                     composable(route = Route.FIRST.name) {
-                        MainScreen(viewModel, searchViewModel, navController)
+                        MainScreen(viewModel, navController)
                     }
                     //画面２
                     composable(

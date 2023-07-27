@@ -1,5 +1,6 @@
 package com.moyashi.generatepiano
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,16 +24,18 @@ fun PracticeItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(3.dp)
             .clickable {
                 navController.navigate("${MainActivity.Route.THIRD.name}/${practice.id}")
             }
+            .background(Color.White)
     ) {//title表示
         Text(
             text = practice.title,
+            color = Color.White,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 4.dp)
+                .padding(bottom = 23.dp)
+                .background(color = Color.Black)
         )
         Text( //作成日時表示
             text = "created at: ${sdf.format(practice.created_at)}",

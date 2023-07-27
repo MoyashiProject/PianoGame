@@ -28,7 +28,7 @@ fun MusicSheetScreen() {
             for (i in 0 until 5) {
                 val y = (i + 1) * size.height / 6 // 6等分した位置に線を描画する
                 drawLine(
-                    color = Color.Blue,
+                    color = Color.Black,
                     start = Offset(0f, y),
                     end = Offset(size.width, y),
                     strokeWidth = 5f

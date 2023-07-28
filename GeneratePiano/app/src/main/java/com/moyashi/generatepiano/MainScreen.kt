@@ -1,5 +1,7 @@
 package com.moyashi.generatepiano
 
+
+import androidx.compose.foundation.Canvas
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -23,6 +25,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +44,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -165,6 +172,14 @@ fun BottomSheet(viewModel: PracticeViewModel) {
             text = "新規曲作成",
             style = MaterialTheme.typography.labelMedium
         )
+        LazyColumn( //リストビュー表示
+            modifier = Modifier
+                .fillMaxWidth() //画面いっぱいに表示
+                .weight(1f)
+        ) {//リストビューのアイテム表示
+            items(practiceList) { practice ->
+                PracticeItem(practice, navController)
+
         Spacer(modifier = Modifier.height(32.dp))
         val selectHard: MutableState<Boolean> = remember { mutableStateOf(false) }
 

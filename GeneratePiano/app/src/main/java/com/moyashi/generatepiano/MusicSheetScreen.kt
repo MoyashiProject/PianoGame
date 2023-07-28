@@ -54,6 +54,19 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
             .fillMaxSize()
             .background(Color.White)
     ) {
+        // Draw the line on the Canvas
+        Canvas(
+            modifier = Modifier.fillMaxSize()
+//吉田
+        ) {
+            for (i in 0 until 5) {
+                val y = (i + 1) * size.height / 6 // 6等分した位置に線を描画する
+                drawLine(
+                    color = Color.Black,
+                    start = Offset(0f, y),
+                    end = Offset(size.width, y),
+                    strokeWidth = 5f
+                )
         Column(modifier = Modifier
             .fillMaxSize()
             .horizontalScroll(rememberScrollState())
@@ -156,6 +169,7 @@ fun GosenhuShita(practice: Practice?){
                 if (id != null) {
                     SetShibuOnpu(id = id, position = 2)
                 }
+
             }
         }
     }

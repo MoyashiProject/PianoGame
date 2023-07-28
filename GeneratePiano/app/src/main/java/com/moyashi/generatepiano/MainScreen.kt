@@ -50,7 +50,6 @@ fun MainScreen(viewModel: PracticeViewModel, navController: NavHostController) {
         ) {//リストビューのアイテム表示
             items(practiceList) { practice ->
                 PracticeItem(practice, navController)
-                PianoBackScreen()
 
             }
         }

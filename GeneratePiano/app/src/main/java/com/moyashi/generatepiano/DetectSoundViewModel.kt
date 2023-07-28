@@ -8,6 +8,9 @@ class DetectSoundViewModel: ViewModel() {
     private val _onkai = MutableLiveData("")
     val onkai: LiveData<String> = _onkai
 
+    private val _onkaiEn = MutableLiveData("")
+    val onkaiEn: LiveData<String> = _onkaiEn
+
     private val _onpu_height = MutableLiveData(0f)
     val onpu_height: LiveData<Float> = _onpu_height
 
@@ -17,13 +20,16 @@ class DetectSoundViewModel: ViewModel() {
     fun setOnkai(value:String) {
         _onkai.value = value
     }
-    fun setNowPlaying(value:Int){
-        _nowPlaying.value = value
+
+    fun setOnkaiEn(value:String){
+        _onkaiEn.value = value
+    }
+
+    fun setNowPlaying(){
+        _nowPlaying.value = nowPlaying.value?.plus(1);
     }
     fun setOnpuHeight(value:Float){
         _onpu_height.value = value
     }
-    private val _onput_height = MutableLiveData<Float>().apply {
-        value = 0f
-    }
+
 }

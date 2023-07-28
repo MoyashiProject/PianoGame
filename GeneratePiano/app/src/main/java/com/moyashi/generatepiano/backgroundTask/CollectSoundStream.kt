@@ -167,6 +167,7 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
                 if (nearestEnum != null) {
                     if(nowDB > 50){
                         detectSoundViewModel.setOnkai(nearestEnum.jpName)
+                        detectSoundViewModel.setOnkaiEn(nearestEnum.name)
                     }
                     println("Nearest Enum: ${nearestEnum.jpName} (${nearestEnum.names}), Frequency: ${nearestEnum.frequency},Maxrequency = $maxFrequency")
                 } else {

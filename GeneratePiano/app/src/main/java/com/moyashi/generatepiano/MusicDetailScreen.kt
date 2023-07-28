@@ -1,15 +1,12 @@
 package com.moyashi.generatepiano
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme.typography
@@ -36,13 +33,13 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
     //MainScrennでクリックされたPracticeItemの詳細を表示
     //画面下で削除か演奏のボタンを選択
     val selectedPractice by remember { mutableStateOf(practice) }
-    Box(
+    MusicNoteBackground()
+    Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(16.dp)
-            .clickable {}
+            .verticalScroll(rememberScrollState())
     ) {
-        MusicNoteBackground()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,7 +59,7 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
                 onClick = {
                     selectedPractice?.let { practiceToDelete ->
                         viewModel.deletePractice(practice = practiceToDelete)
-                        navController.navigate((MainActivity.Route.FIRST.name))
+                        navController.navigate(MainActivity.Route.FIRST.name)
                     }
                 },
             ) {
@@ -72,40 +69,33 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
                 )
             }
         }
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState())
-        ) {
-            if (practice != null) {
-                Text(
-                    text = practice.title,
-                    style = typography.h5.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 8.dp)
-                )
-                Text(
-                    text = "作成日時 : ${practice.created_at}",
-                    style = typography.body1,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-                Text(
-                    text="右手:${practice.right_hand}",
-                    style = typography.body1,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
-            } else {
-                Text("Practice not found.")
-            }
-        }
 
+        if (practice != null) {
+            Text(
+                text = practice.title,
+                style = typography.h5.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 8.dp)
+            )
+            Text(
+                text = "作成日時 : ${practice.created_at}",
+                style = typography.body1,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+            Text(
+                text="右手:${practice.right_hand}",
+                style = typography.body1,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        } else {
+            Text("Practice not found.")
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .align(Alignment.BottomEnd)
+                .align(Alignment.End)
         ) {
             Button(
                 onClick = {

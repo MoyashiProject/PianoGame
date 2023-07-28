@@ -2,6 +2,7 @@ package com.moyashi.generatepiano
 
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,15 +22,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -45,6 +45,17 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Card
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -67,14 +78,23 @@ fun MainScreen(
     }
     val topAppBarState = rememberTopAppBarState()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topAppBarState)
-
+    val fontFamily = FontFamily(
+        Font(R.font.drumfont)
+    )
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("練習曲一覧") },
+            MediumTopAppBar(
+                title = { Text("ピアノのれんしゅう",fontFamily= fontFamily, fontSize = 23.sp) },
                 scrollBehavior = scrollBehavior,
-            )
+                actions = {
+                    IconButton(onClick = {/* Do Something*/ }) {
+                        Icon(Icons.Filled.Share, null)
+                    }
+                    IconButton(onClick = {/* Do Something*/ }) {
+                        Icon(Icons.Filled.Settings, null)
+                    }
+                })
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -88,48 +108,51 @@ fun MainScreen(
         }
     ) {
         Column {
-            Column(modifier=Modifier.padding(it)){
+            Column(modifier= Modifier
+                .padding(it)
+                .background(MaterialTheme.colorScheme.background)){
                 OutlinedTextField(
                     value = searchText,
                     onValueChange = { newText ->
                         searchText = newText
                         viewModel.loadIdentifyPractice(newText)
                     },
-                    label = { Text("検索")},
+                    label = { Text("けんさく",fontFamily = fontFamily)},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 6.dp, horizontal = 32.dp),
+                        .padding(vertical = 0.dp, horizontal = 12.dp),
                 )
             }
 
             ModalBottomSheetLayout(sheetContent = { BottomSheet(viewModel)}, sheetState = sheetState, modifier = Modifier.fillMaxSize()) {
-                LazyColumn( //リストビュー表示
-                    modifier = Modifier
-                        .fillMaxWidth() //画面いっぱいに表示
-                        .weight(1f),
-                ) {//リストビューのアイテム表示
+                if(viewModel.practiceList.isEmpty()){
+                    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "ピアノデータを早速作ってモテよう！")
 
-                    items(practiceList) { practice ->
-                        PracticeItem(practice, navController)
+                    }
+                }else{
+                    LazyColumn( //リストビュー表示
+                        modifier = Modifier
+                            .fillMaxWidth() //画面いっぱいに表示
+                            .weight(1f),
+                    ) {//リストビューのアイテム表示
+                            items(practiceList) { practice ->
+                                Card(modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp)){
+                                    PracticeItem(practice, navController)
+
+                                }
+                            }
                     }
                 }
-            }//列で表示
-            OutlinedTextField(
 
-                value = searchText,
-                onValueChange = { newText ->
-                    searchText = newText
-                    viewModel.loadIdentifyPractice(newText)
-                },
-                label = { Text("検索")},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
+            }//列で表示
+
         }
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(viewModel: PracticeViewModel) {

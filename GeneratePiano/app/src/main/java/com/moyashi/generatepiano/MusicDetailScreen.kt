@@ -1,18 +1,31 @@
 package com.moyashi.generatepiano
 
 
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme.typography
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
+
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,18 +54,50 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
+            .clickable {}
     ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            IconButton(
+                onClick = { navController.popBackStack(MainActivity.Route.FIRST.name,
+                    inclusive = false)
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "戻る")
+            }
+            IconButton(
+                onClick = {
+                    selectedPractice?.let { practiceToDelete ->
+                        viewModel.deletePractice(practice = practiceToDelete)
+                        navController.navigate((MainActivity.Route.FIRST.name))
+                    }
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "削除"
+                )
+            }
+        }
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .padding(16.dp)
                 .verticalScroll(rememberScrollState())
-                .align(Alignment.Center)
         ) {
             if (practice != null) {
                 Text(
                     text = practice.title,
                     style = typography.h5.copy(fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(bottom = 8.dp)
                 )
                 Text(
                     text = "作成日時 : ${practice.created_at}",
@@ -86,24 +131,17 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+                .align(Alignment.BottomEnd)
         ) {
             Button(
                 onClick = {
-                    navController.popBackStack(MainActivity.Route.FIRST.name, inclusive = false)
-                },
-                modifier = Modifier.padding(end = 8.dp)
-            ) {
-                Text("戻る")
-            }
-            Button(
-                onClick = {
-//                    navController.navigate(MainActivity.Route.SECOND.name)
-                     navController.navigate("${MainActivity.Route.SECOND.name}/${practice?.id}")
+
                 }
             ) {
                 Text("練習する")
             }
+
             Button(
                 onClick = {
                     selectedPractice?.let { practiceToDelete ->
@@ -114,7 +152,6 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
             ) {
                 Text("削除する")
             }
-
         }
     }
 }

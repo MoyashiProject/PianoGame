@@ -1,5 +1,6 @@
 package com.moyashi.generatepiano
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
@@ -18,10 +19,19 @@ class PracticeViewModel : ViewModel() {
         loadPractice()
     }
 
-    fun postPractice(title: String) {
+    fun postPractice(title: String, hardMode: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            val scores = GenerateScore().GenerateEasy()
-            val newPractice = Practice(id = 0, title = title, created_at = Date(),scores,scores)
+
+            val scores :List<String>
+
+            if(hardMode){
+                scores = GenerateScore().GenerateHard()
+                println("難しいモード")
+            }else{
+                scores = GenerateScore().GenerateEasy()
+
+            }
+            val newPractice = Practice(id = 0, title = title, created_at = Date(),hardMode,scores,scores)
             dao.post(newPractice)
             loadPractice()
         }

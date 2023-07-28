@@ -68,7 +68,7 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
         // 指定period[ms]ごとにrecordingModeで指定した処理を実行
         if (!run) {
             recoding(period)
-            recodingFrequency(12)
+            recodingFrequency(period)
         }
     }
 

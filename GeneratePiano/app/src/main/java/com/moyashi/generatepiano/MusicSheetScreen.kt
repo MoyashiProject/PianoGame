@@ -36,8 +36,11 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.moyashi.generatepiano.backgroundTask.GenerateScore
 import com.moyashi.generatepiano.enum.enum_musicStep
 import com.moyashi.generatepiano.function.ShibuOnpu
@@ -46,8 +49,11 @@ import java.util.Date
 @Composable
 fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
 
-    val counter = viewModel.counter.observeAsState()
+    val onkai = viewModel.onkai.observeAsState()
     val onpuHeight = viewModel.onpu_height.observeAsState()
+    val nowPlaying = viewModel.nowPlaying.observeAsState()
+//    var nowPlaying by remember { mutableStateOf("") }
+
     LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
     Box(
         modifier = Modifier
@@ -63,27 +69,23 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
                     Row(
                         modifier = Modifier
                             .weight(1F)
-                            .fillMaxWidth().padding(start = 150.dp),
+                            .fillMaxWidth()
+                            .padding(start = 150.dp),
                     ){
-                        Gosenhu(practice)
+                        Gosenhu(practice,viewModel)
                     }
                     Row(
                         modifier = Modifier
                             .weight(1F)
-                            .fillMaxWidth().padding(start = 150.dp),
+                            .fillMaxWidth()
+                            .padding(start = 150.dp),
                     ){
-                        GosenhuShita(practice = practice)
+                        GosenhuShita(practice = practice,viewModel)
                     }
                 }
-//                Row(modifier = Modifier.padding(start = 120.dp)){
-//                    practice?.right_hand?.forEach{ hand ->
-//                        Box(modifier = Modifier
-//                            .padding(start = 44.dp)
-//                            .offset(y = (-93).dp)) {
-//                            setOnpu(name = "$hand")
-//                        }
-//                    }
-//                }
+                onkai.value?.let { count ->
+                    Text("$count", textAlign = TextAlign.Center,modifier = Modifier.width(150.dp), fontSize = 50.sp)
+                }
             }
         }
 
@@ -93,8 +95,43 @@ fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
     }
 }
 @Composable
-fun Gosenhu(practice: Practice?){
+fun Gosenhu(practice: Practice?,viewModel:DetectSoundViewModel){
     Row{
+        var count: Int = 0
+        practice?.right_hand?.forEach{ right ->
+            Box{
+                val id = getEnumMusicID(right)
+                Canvas(
+                    modifier = Modifier
+                        .width(50.dp)
+                        .fillMaxHeight()
+                        .padding(vertical = 32.dp)
+                        .background(Color.White)
+
+                ) {
+                    for (i in 0 .. 4) {
+                        val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
+                        drawLine(
+                            color = Color.Black,
+                            start = Offset(0f, y),
+                            end = Offset(size.width, y),
+                            strokeWidth = 5f
+                        )
+
+                    }
+                }
+                if (id != null) {
+                    SetShibuOnpu(id = id, position = 1,count=count, nowPlaying = viewModel)
+                }
+            }
+            count += 1
+        }
+    }
+}
+@Composable
+fun GosenhuShita(practice: Practice?,viewModel: DetectSoundViewModel){
+    Row{
+        var count: Int = 0
         practice?.right_hand?.forEach{ right ->
             Box{
                 val id = getEnumMusicID(right)
@@ -120,65 +157,34 @@ fun Gosenhu(practice: Practice?){
                     }
                 }
                 if (id != null) {
-                    SetShibuOnpu(id = id, position = 1)
+                    SetShibuOnpu(id = id, position = 2,count = count, nowPlaying = viewModel)
                 }
             }
+            count += 1
         }
     }
 }
 @Composable
-fun GosenhuShita(practice: Practice?){
-    Row{
-        practice?.right_hand?.forEach{ right ->
-            Box{
-                val id = getEnumMusicID(right)
-                Canvas(
-                    modifier = Modifier
-                        .width(50.dp)
-                        .fillMaxHeight()
-                        .padding(vertical = 32.dp)
-                        .background(Color.White)
-
-                ) {
-                    for (i in 0 .. 4) {
-                        val y = ( i + 1 ) * size.height / 6 // 6等分した位置に線を描画する
-                        drawLine(
-                            color = Color.Black,
-                            start = Offset(0f, y),
-                            end = Offset(size.width, y),
-                            strokeWidth = 5f
-                        )
-                        if(i == 4){
-
-                        }
-                    }
-                }
-                if (id != null) {
-                    SetShibuOnpu(id = id, position = 2)
-                }
-            }
-        }
-    }
-}
-@Composable
-fun SetShibuOnpu(id:Int,position:Int){
+fun SetShibuOnpu(id:Int,position:Int,count: Int,nowPlaying:DetectSoundViewModel){
     if(position == 1){
         if(id >= 37){
 
-            Box(modifier = Modifier.offset(y = (-5).times(id - 51).dp).fillMaxWidth()){
+            Box(modifier = Modifier
+                .offset(y = (-5).times(id - 51).dp)
+                .fillMaxWidth()){
                 Box(modifier = Modifier.offset(y = (90).dp)){
-                    ShibuOnpu(id = id)
-
+                    ShibuOnpu(id = id,count = count, viewModel = nowPlaying)
                 }
                 Text(text = "$id")
             }
         }
     } else{
         if(id < 37){
-            Box(modifier = Modifier.offset(y = (-4.98).times(id - 51).dp).fillMaxWidth()){
+            Box(modifier = Modifier
+                .offset(y = (-4.98).times(id - 51).dp)
+                .fillMaxWidth()){
                 Box(modifier = Modifier.offset(y = (-15).dp)){
-                    ShibuOnpu(id = id)
-
+                    ShibuOnpu(id = id,count = count, viewModel = nowPlaying)
                 }
                 Text(text = "$id")
             }
@@ -236,13 +242,13 @@ fun clef(drawable: String){
 fun ViewFraction(upText: Int, downText: Int,x: Int, y1: Int, y2: Int){
     val density = LocalDensity.current
     Text(
-        text = "${upText}",
+        text = "$upText",
         modifier = Modifier
             .offset(x = x.dp, y = (y1).dp),
         fontSize = with(density) {60.dp.toSp()}
     )
     Text(
-        text = "${downText}",
+        text = "$downText",
         modifier = Modifier
             .offset(x = x.dp, y = y2.dp),
         fontSize = with(density) {60.dp.toSp()}

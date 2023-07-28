@@ -12,6 +12,10 @@ import android.os.Looper
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.moyashi.generatepiano.DetectSoundViewModel
@@ -29,7 +33,6 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
             return enum_musicStep.values().minByOrNull { Math.abs(it.frequency - frequency) }
         }
     }
-
     private val sampleRate = 44100 // サンプリングレート
     // 音データのサイズ
     private val bufferSize = AudioRecord.getMinBufferSize(
@@ -41,6 +44,8 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
 
     private var isRecoding: Boolean = false // 録音しているか
     private var run: Boolean = false // 音解析をしているか
+
+    private var nowDB: Int = 0 //今のデシベルの値
 
     // 録音開始時の初期設定
     // period: オーディオ処理のインターバル
@@ -69,6 +74,7 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
         if (!run) {
             recoding(period)
             recodingFrequency(period)
+            recodingDB(period)
         }
     }
 
@@ -109,8 +115,8 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
                 val amplitude = sqrt(sum / bufferSize)
                 // デシベル変換
                 val db = (20.0 * log10(amplitude)).toInt()
-                //Log.d(LOG_NAME,"db = $db")
-
+                Log.d(LOG_NAME,"db = $db")
+                nowDB = db
                 if (run) {
                     hnd0.postDelayed(this, period.toLong())
                 }
@@ -159,7 +165,9 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
 
 
                 if (nearestEnum != null) {
-                    detectSoundViewModel.setOnkai(nearestEnum.jpName)
+                    if(nowDB > 50){
+                        detectSoundViewModel.setOnkai(nearestEnum.jpName)
+                    }
                     println("Nearest Enum: ${nearestEnum.jpName} (${nearestEnum.names}), Frequency: ${nearestEnum.frequency},Maxrequency = $maxFrequency")
                 } else {
                     println("No matching enum found.")

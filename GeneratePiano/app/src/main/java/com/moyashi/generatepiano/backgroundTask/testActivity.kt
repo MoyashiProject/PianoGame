@@ -50,7 +50,7 @@ class testActivity : ComponentActivity() {
     }
     @Composable
     fun Greeting(viewModel: DetectSoundViewModel) {
-        val counter = viewModel.counter.observeAsState()
+        val counter = viewModel.onkai.observeAsState()
         var text: String by remember { mutableStateOf("") }
         GeneratePianoTheme {
             // A surface container using the 'background' color from the theme

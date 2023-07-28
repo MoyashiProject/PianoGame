@@ -29,7 +29,6 @@ import androidx.navigation.NavHostController
 @Composable
 fun MainScreen(
     viewModel: PracticeViewModel,
-    searchViewModel: SearchViewModel,
     navController: NavHostController
 ) {
     val practiceList = viewModel.retrievePracticeList()

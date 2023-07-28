@@ -29,10 +29,10 @@ class MainActivity : ComponentActivity() {
         val viewModel = PracticeViewModel()
         val detectSoundViewModel = ViewModelProvider(this)[DetectSoundViewModel::class.java]
         val sound = CollectSoundStream(context,detectSoundViewModel)
-        sound.start(100)
+//        sound.start(100)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            MyAppScreen(viewModel,detectSoundViewModel)
+            MyAppScreen(context,viewModel,detectSoundViewModel)
         }
     }
 
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MyAppScreen(viewModel: PracticeViewModel,detectSoundViewModel: DetectSoundViewModel) {
+    fun MyAppScreen(context:Context,viewModel: PracticeViewModel,detectSoundViewModel: DetectSoundViewModel) {
         val navController = rememberNavController()
 
         GeneratePianoTheme {
@@ -67,13 +67,15 @@ class MainActivity : ComponentActivity() {
                         //楽譜表示画面
                         val practiceID = backStackEntry.arguments?.getLong("practiceId")
                         val practice = viewModel.retrievePracticeById(practiceID ?:0L)
-                        MusicSheetScreen(practice,detectSoundViewModel)
+                        MusicSheetScreen(context = context,practice,detectSoundViewModel)
                     }
                     // 詳細画面
                     composable(
                         route = "${Route.THIRD.name}/{practiceId}",
                         arguments = listOf(navArgument("practiceId") { type = NavType.LongType })
                     ) { backStackEntry ->
+                        val sound = CollectSoundStream(context,detectSoundViewModel)
+                        sound.stopCollectSoundStream()
                         val practiceId = backStackEntry.arguments?.getLong("practiceId")
                         val practice = viewModel.retrievePracticeById(practiceId ?: 0L)
                         MusicDetailScreen(practice, navController, viewModel)

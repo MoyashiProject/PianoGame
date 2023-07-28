@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.moyashi.generatepiano.backgroundTask.CollectSoundStream
 import com.moyashi.generatepiano.backgroundTask.GenerateScore
 import com.moyashi.generatepiano.enum.enum_musicStep
 import com.moyashi.generatepiano.function.ShibuOnpu
@@ -51,12 +52,14 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-fun MusicSheetScreen(practice:Practice?,viewModel:DetectSoundViewModel) {
+fun MusicSheetScreen(context: Context,practice:Practice?,viewModel:DetectSoundViewModel) {
 
     val onkai = viewModel.onkai.observeAsState()
     val onkaiEn = viewModel.onkaiEn.observeAsState()
     val onpuHeight = viewModel.onpu_height.observeAsState()
 //    var nowPlaying by remember { mutableStateOf("") }
+    val sound = CollectSoundStream(context,viewModel)
+    sound.start(100)
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var count:Int by remember { mutableStateOf(0) }

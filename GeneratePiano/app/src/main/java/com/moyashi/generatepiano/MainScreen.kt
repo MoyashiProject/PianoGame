@@ -85,8 +85,12 @@ fun MainScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             MediumTopAppBar(
-                title = { Text("ピアノのれんしゅう",fontFamily= fontFamily, fontSize = 23.sp) },
+                title = { Text("ピアノのれんしゅう",fontFamily= fontFamily, fontSize = 23.sp, style = MaterialTheme.typography.headlineMedium,) },
                 scrollBehavior = scrollBehavior,
+                colors = TopAppBarDefaults.largeTopAppBarColors(
+                    titleContentColor=MaterialTheme.colorScheme.onSurface
+                ),
+
                 actions = {
                     IconButton(onClick = {/* Do Something*/ }) {
                         Icon(Icons.Filled.Share, null)

@@ -77,6 +77,9 @@ class CollectSoundStream(val context: Context,val detectSoundViewModel: DetectSo
             recodingDB(period)
         }
     }
+    fun stopCollectSoundStream(){
+        run = true
+    }
 
     // AudioRecordから定期的にデータをもらう
     private fun recoding(period: Int) {

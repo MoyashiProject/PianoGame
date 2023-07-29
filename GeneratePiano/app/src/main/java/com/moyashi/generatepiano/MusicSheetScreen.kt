@@ -147,6 +147,9 @@ fun MusicSheetScreen(context: Context,practice:Practice?,viewModel:DetectSoundVi
                     onClick = {
                         count += 1
                         viewModel.setNowPlaying()
+                        coroutineScope.launch {
+                            scrollState.animateScrollBy(140.dp.value)
+                        }
                     },
                     modifier = Modifier
                         .width(80.dp)

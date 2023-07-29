@@ -39,8 +39,7 @@ class MainActivity : ComponentActivity() {
     enum class Route { // ナビゲーションルートの定義
         FIRST,
         SECOND,
-        THIRD,
-        FOURTH;
+        THIRD;
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -79,11 +78,6 @@ class MainActivity : ComponentActivity() {
                         val practiceId = backStackEntry.arguments?.getLong("practiceId")
                         val practice = viewModel.retrievePracticeById(practiceId ?: 0L)
                         MusicDetailScreen(practice, navController, viewModel)
-                    }
-                    composable(
-                        route = Route.FOURTH.name
-                    ) {
-                        //楽譜作成画面
                     }
                 }
             }

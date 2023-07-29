@@ -3,6 +3,7 @@ package com.moyashi.generatepiano
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -138,19 +139,16 @@ fun MainScreen(
                             .weight(1f),
                     ) {//リストビューのアイテム表示
                             items(practiceList) { practice ->
-                                Card(modifier = Modifier.padding(horizontal = 12.dp, vertical = 5.dp)){
+
                                     PracticeItem(practice, navController)
 
-                                }
                             }
                     }
                 }
 
             }//列で表示
-
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

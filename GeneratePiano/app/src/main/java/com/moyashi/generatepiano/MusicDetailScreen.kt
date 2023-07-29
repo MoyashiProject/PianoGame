@@ -4,9 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme.typography
@@ -33,6 +37,7 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
     //MainScrennでクリックされたPracticeItemの詳細を表示
     //画面下で削除か演奏のボタンを選択
     val selectedPractice by remember { mutableStateOf(practice) }
+
     MusicNoteBackground()
     Column(
         modifier = Modifier
@@ -76,18 +81,53 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
                 style = typography.h5.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = 8.dp),
+                fontSize = 48.sp
             )
+            
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = if(practice.difficult) {
+                    "難しい"
+                } else {
+                    "簡単"
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                fontSize = 16.sp
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
             Text(
                 text = "作成日時 : ${practice.created_at}",
                 style = typography.body1,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier
+                    .padding(bottom = 8.dp)
+                    .align(Alignment.CenterHorizontally)
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "演奏のコツは、楽しむこと‼",
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                fontSize = 24.sp
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Text(
                 text="右手:${practice.right_hand}",
                 style = typography.body1,
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
+            Text(
+                text = "左手:${practice.left_hand}",
+                style = typography.body1,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
+
         } else {
             Text("Practice not found.")
         }
@@ -95,13 +135,14 @@ fun MusicDetailScreen(practice: Practice?, navController: NavHostController, vie
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .align(Alignment.End)
+                .fillMaxHeight()
+                .wrapContentSize(Alignment.BottomEnd)
         ) {
             Button(
                 onClick = {
-                    navController.navigate(MainActivity.Route.SECOND.name)
+                    navController.navigate("${MainActivity.Route.SECOND.name}/${practice?.id}")
                 }
-            ) {
+            )   {
                 Text("練習する")
             }
         }
@@ -122,6 +163,5 @@ fun MusicNoteBackground() {
             style = noteStyle,
             modifier = Modifier.align(Alignment.Center)
         )
-
     }
 }

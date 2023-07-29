@@ -139,9 +139,12 @@ fun MainScreen(
                             .weight(1f),
                     ) {//リストビューのアイテム表示
                             items(practiceList) { practice ->
-
+                                Card(modifier = Modifier
+                                    .padding(horizontal = 12.dp)
+                                    .border(1.dp, Color.Black)
+                                ){
                                     PracticeItem(practice, navController)
-
+                                }   
                             }
                     }
                 }

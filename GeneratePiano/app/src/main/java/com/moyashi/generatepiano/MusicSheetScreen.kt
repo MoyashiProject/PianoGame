@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +22,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -59,7 +66,7 @@ fun MusicSheetScreen(context: Context,practice:Practice?,viewModel:DetectSoundVi
     val onpuHeight = viewModel.onpu_height.observeAsState()
 //    var nowPlaying by remember { mutableStateOf("") }
     val sound = CollectSoundStream(context,viewModel)
-    sound.start(100)
+
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var count:Int by remember { mutableStateOf(0) }
@@ -93,11 +100,63 @@ fun MusicSheetScreen(context: Context,practice:Practice?,viewModel:DetectSoundVi
                     }
                 }
 
-                Button(onClick = {
-                    count += 1
-                    viewModel.setNowPlaying()
-                }){
-                    Text("ガウス")
+            }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Button(
+                    onClick = {
+                        count -= 1
+                        viewModel.setBackNowPlaying()
+                    },
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(40.dp)
+                        .padding(end = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Favorite",
+                        tint = Color.White
+                    )
+                }
+
+                Button(
+                    onClick = {
+                        sound.start(100)
+                    },
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(40.dp)
+                        .padding(end = 8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PlayArrow,
+                        contentDescription = "Settings",
+                        tint = Color.White
+                    )
+                }
+                Button(
+                    onClick = {
+                        count += 1
+                        viewModel.setNowPlaying()
+                    },
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(40.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward,
+                        contentDescription = "Home",
+                        tint = Color.White
+                    )
                 }
             }
         }
@@ -106,12 +165,9 @@ fun MusicSheetScreen(context: Context,practice:Practice?,viewModel:DetectSoundVi
         clef(drawable = "bass_clef")
         onkaiEn.value?.let { onkaiEn ->
             if (practice != null) {
-                Log.d("ココアライオン","ここあらいおん${practice.right_hand[count]}と${onkaiEn}")
                 if(practice.right_hand[count] == onkaiEn){
-                    Log.d("ココアライオン","right_hand")
                     coroutineScope.launch {
                         scrollState.animateScrollBy(140.dp.value)
-
                     }
                     viewModel.setNowPlaying()
                     count += 1
@@ -122,6 +178,8 @@ fun MusicSheetScreen(context: Context,practice:Practice?,viewModel:DetectSoundVi
 
     }
 }
+
+
 @Composable
 fun Gosenhu(practice: Practice?,viewModel:DetectSoundViewModel){
     Row{
